@@ -22,6 +22,20 @@ public class HotelService {
 	}
 	
 	public HotelDTO addHotel(HotelCreateDTO hotelCreateDTO) {
+		
+		int numberOfHotelsOfAdmin = hotelRepository.countByAdministratorId(hotelCreateDTO.getAdministratorId());
+		if (numberOfHotelsOfAdmin >= 5) {
+			throw new IllegalStateException("Too much hotels for this administrator!");
+		}
+		
+		for (int i = 0; i < hotelCreateDTO.getRooms().size(); i += 1) {
+			for (int j = 0; j < hotelCreateDTO.getRooms().size(); j += 1) {
+				if (i != j && hotelCreateDTO.getRooms().get(i).getNumber() == hotelCreateDTO.getRooms().get(j).getNumber()) {
+					throw new IllegalStateException("Two rooms inside the same hotel can't have the same numbers!");
+				}
+			}
+		}
+		
 		Hotel hotel = new Hotel();
 		hotel.setName(hotelCreateDTO.getName());
 		hotel.setAddress(hotelCreateDTO.getAddress());
@@ -51,6 +65,21 @@ public class HotelService {
 	}
 	
 	public HotelDTO updateHotel(Long id, HotelUpdateDTO hotelUpdateDTO) {
+		int numberOfHotelsOfAdmin = hotelRepository.countByAdministratorId(hotelUpdateDTO.getAdministratorId());
+		if (hotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Hotel not found!")).getAdministrator().getId() != hotelUpdateDTO.getAdministratorId() && numberOfHotelsOfAdmin >= 5) {
+			throw new IllegalStateException("Too much hotels for this administrator!");
+		}
+		
+		for (int i = 0; i < hotelUpdateDTO.getRooms().size(); i += 1) {
+			for (int j = 0; j < hotelUpdateDTO.getRooms().size(); j += 1) {
+				if (i != j && hotelUpdateDTO.getRooms().get(i).getNumber() == hotelUpdateDTO.getRooms().get(j).getNumber()) {
+					throw new IllegalStateException("Two rooms inside the same hotel can't have the same numbers!");
+				}
+			}
+		}
+		
+		
+		
 		Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Hotel not found"));
 		hotel.setName(hotelUpdateDTO.getName());
 		hotel.setAddress(hotelUpdateDTO.getAddress());

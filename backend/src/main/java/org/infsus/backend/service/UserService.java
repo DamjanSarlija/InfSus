@@ -27,6 +27,11 @@ public class UserService {
 	}
 	
 	public UserDTO addUser(UserCreateDTO userCreateDTO) {
+		
+		if (userRepository.existsByEmail(userCreateDTO.getEmail())) {
+			throw new IllegalStateException("Multiple users cannot have the same email!");
+		}
+		
 		User user = new User();
 		user.setFullName(userCreateDTO.getFullName());
 		user.setEmail(userCreateDTO.getEmail());
@@ -92,6 +97,11 @@ public class UserService {
 	}
 	
 	public UserDTO updateUser(Long id, UserCreateDTO userCreateDTO) {
+		
+		if (userRepository.existsByEmail(userCreateDTO.getEmail())) {
+			throw new IllegalStateException("Multiple users cannot have the same email!");
+		}
+		
 		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 		user.setFullName(userCreateDTO.getFullName());
 		user.setEmail(userCreateDTO.getEmail());

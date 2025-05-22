@@ -16,6 +16,7 @@ import java.util.List;
 @EnableWebSecurity
 public class SecurityConfig {
 
+	
 	@Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -39,5 +40,7 @@ public class SecurityConfig {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
         return source;
-    }
+    }  
+	
+	
 }
