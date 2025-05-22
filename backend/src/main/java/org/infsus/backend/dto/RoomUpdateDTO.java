@@ -1,6 +1,7 @@
 package org.infsus.backend.dto;
 
 import lombok.AllArgsConstructor;
+import jakarta.validation.constraints.*;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,7 +12,9 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RoomUpdateDTO {
 	
+	@NotNull
 	private Long id;
+	
 	private int number;
 	private int capacity;
 	private int pricePerNight;

@@ -3,6 +3,7 @@ package org.infsus.backend.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -12,11 +13,21 @@ import lombok.NoArgsConstructor;
 @Builder
 public class HotelUpdateDTO {
 	
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String address;
+	
+	@NotBlank
 	private String description;
+	
+	@NotNull
 	private List<RoomUpdateDTO> rooms;
+	
 	private boolean verified;
+	
+	@NotNull
 	private Long administratorId;
 	
 	public String getName() {

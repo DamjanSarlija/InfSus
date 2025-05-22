@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -23,13 +24,13 @@ public class HotelController {
 	private HotelService hotelService;
 	
 	@PostMapping
-	public HotelDTO addHotel(@RequestBody HotelCreateDTO hotelCreateDTO) {
+	public HotelDTO addHotel(@RequestBody @Valid HotelCreateDTO hotelCreateDTO) {
 		HotelDTO hotelDTO = hotelService.addHotel(hotelCreateDTO);
 		return hotelDTO;
 	}
 	
 	@PutMapping("/{id}")
-	public HotelDTO updateHotel(@RequestBody HotelUpdateDTO hotelUpdateDTO, @PathVariable Long id) {
+	public HotelDTO updateHotel(@RequestBody @Valid HotelUpdateDTO hotelUpdateDTO, @PathVariable Long id) {
 		return hotelService.updateHotel(id, hotelUpdateDTO);
 	}
 	

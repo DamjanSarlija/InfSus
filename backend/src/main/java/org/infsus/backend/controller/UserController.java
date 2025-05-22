@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -20,7 +21,7 @@ public class UserController {
 	private UserService userService;
 	
 	@PostMapping
-	public UserDTO addUser(@RequestBody UserCreateDTO userCreateDTO) {
+	public UserDTO addUser(@RequestBody @Valid UserCreateDTO userCreateDTO) {
 		UserDTO userDTO = userService.addUser(userCreateDTO);
 		return userDTO;
 		
@@ -33,7 +34,7 @@ public class UserController {
 	}
 	
 	@PutMapping("/{id}")
-	public UserDTO updateUser(@RequestBody UserCreateDTO userCreateDTO, @PathVariable Long id) {
+	public UserDTO updateUser(@RequestBody @Valid UserCreateDTO userCreateDTO, @PathVariable Long id) {
 		return userService.updateUser(id, userCreateDTO);
 	}
 	

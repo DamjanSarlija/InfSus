@@ -10,6 +10,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,13 @@ import lombok.NoArgsConstructor;
 @Builder
 public class UserCreateDTO {
 	
+	@NotBlank
 	private String fullName;
+	
+	@NotBlank
 	private String email;
+	
+	@NotBlank
 	private String phoneNumber;
 
 	public String getFullName() {

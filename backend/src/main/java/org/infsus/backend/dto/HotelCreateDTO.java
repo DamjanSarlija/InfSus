@@ -2,17 +2,30 @@ package org.infsus.backend.dto;
 
 import java.util.*;
 import org.infsus.backend.entity.*;
+
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class HotelCreateDTO {
+	
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String address;
+	
+	@NotBlank
 	private String description;
+	
+	@NotNull
 	private List<RoomCreateDTO> rooms = new ArrayList<>();
+	
 	private boolean verified;
+	
+	@NotNull
 	private Long administratorId;
 	
 	

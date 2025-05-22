@@ -1,5 +1,6 @@
 package org.infsus.backend.dto;
 
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
@@ -8,8 +9,11 @@ import lombok.*;
 @Builder
 public class RoomCreateDTO {
 	
+	
 	private int number;
+	
 	private int capacity;
+	
 	private int pricePerNight;
 	private boolean available;
 	
