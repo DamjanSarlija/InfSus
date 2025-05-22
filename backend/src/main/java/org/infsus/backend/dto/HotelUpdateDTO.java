@@ -1,27 +1,24 @@
 package org.infsus.backend.dto;
 
-import java.util.*;
-import org.infsus.backend.entity.*;
-import lombok.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class HotelCreateDTO {
+public class HotelUpdateDTO {
+	
 	private String name;
 	private String address;
 	private String description;
-	private List<RoomCreateDTO> rooms = new ArrayList<>();
+	private List<RoomUpdateDTO> rooms;
 	private boolean verified;
 	private Long administratorId;
 	
-	
-	public boolean isVerified() {
-		return verified;
-	}
-	public void setVerified(boolean verified) {
-		this.verified = verified;
-	}
 	public String getName() {
 		return name;
 	}
@@ -40,11 +37,18 @@ public class HotelCreateDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	public List<RoomCreateDTO> getRooms() {
+	public List<RoomUpdateDTO> getRooms() {
 		return rooms;
 	}
-	public void setRooms(List<RoomCreateDTO> rooms) {
+	public void setRooms(List<RoomUpdateDTO> rooms) {
 		this.rooms = rooms;
+	}
+	
+	public boolean isVerified() {
+		return verified;
+	}
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 	public Long getAdministratorId() {
 		return administratorId;
@@ -52,6 +56,8 @@ public class HotelCreateDTO {
 	public void setAdministratorId(Long administratorId) {
 		this.administratorId = administratorId;
 	}
+	
+	
 	
 	
 }

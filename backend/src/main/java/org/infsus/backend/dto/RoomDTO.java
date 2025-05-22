@@ -11,7 +11,7 @@ public class RoomDTO {
 	private int number;
 	private int capacity;
 	private int pricePerNight;
-	private boolean isAvailable;
+	private boolean available;
 	private Long hotelId;
 	public Long getId() {
 		return id;
@@ -37,11 +37,12 @@ public class RoomDTO {
 	public void setPricePerNight(int pricePerNight) {
 		this.pricePerNight = pricePerNight;
 	}
+	
 	public boolean isAvailable() {
-		return isAvailable;
+		return available;
 	}
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 	public Long getHotelId() {
 		return hotelId;

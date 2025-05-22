@@ -22,7 +22,7 @@ public class Room {
 	private int number;
 	private int capacity;
 	private int pricePerNight;
-	private boolean isAvailable;
+	private boolean available;
 	
 	@ManyToOne
 	@JoinColumn(name = "hotel_id", nullable = false)
@@ -60,12 +60,14 @@ public class Room {
 		this.pricePerNight = pricePerNight;
 	}
 
+	
+
 	public boolean isAvailable() {
-		return isAvailable;
+		return available;
 	}
 
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
+	public void setAvailable(boolean available) {
+		this.available = available;
 	}
 
 	public Hotel getHotel() {

@@ -14,15 +14,17 @@ public class HotelDTO {
 	private String name;
 	private String address;
 	private String description;
-	private boolean isVerified;
+	private boolean verified;
 	private List<RoomDTO> rooms = new ArrayList<>();
-	public User getAdministrator() {
-		return administrator;
+	private Long administratorId;
+	
+	
+	public Long getAdministratorId() {
+		return administratorId;
 	}
-	public void setAdministrator(User administrator) {
-		this.administrator = administrator;
+	public void setAdministratorId(Long administratorId) {
+		this.administratorId = administratorId;
 	}
-	private User administrator;
 	public Long getId() {
 		return id;
 	}
@@ -47,11 +49,12 @@ public class HotelDTO {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
 	public boolean isVerified() {
-		return isVerified;
+		return verified;
 	}
-	public void setVerified(boolean isVerified) {
-		this.isVerified = isVerified;
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 	public List<RoomDTO> getRooms() {
 		return rooms;

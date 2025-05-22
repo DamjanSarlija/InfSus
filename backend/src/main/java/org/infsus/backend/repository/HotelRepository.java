@@ -11,5 +11,5 @@ public interface HotelRepository extends JpaRepository<Hotel, Long>{
 	List<Hotel> findByName(String name);
 	List<Hotel> findByAddress(String address);
 	List<Hotel> findByDescription(String description);
-	List<Hotel> findByIsVerified(boolean isVerified);
+	List<Hotel> findByVerified(boolean isVerified);
 }

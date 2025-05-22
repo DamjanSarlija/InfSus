@@ -80,7 +80,7 @@ public class UserService {
 			}
 			hotelDTO.setRooms(roomsDTO);
 			
-			hotelDTO.setAdministrator(hotel.getAdministrator());
+			hotelDTO.setAdministratorId(hotel.getAdministrator().getId());
 			
 			
 			hotelsDTO.add(hotelDTO);

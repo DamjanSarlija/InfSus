@@ -19,7 +19,7 @@ public class Hotel {
 	private String name;
 	private String address;
 	private String description;
-	private boolean isVerified;
+	private boolean verified;
 	
 	@OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Room> rooms = new ArrayList<>();
@@ -60,12 +60,14 @@ public class Hotel {
 		this.description = description;
 	}
 
+	
+
 	public boolean isVerified() {
-		return isVerified;
+		return verified;
 	}
 
-	public void setVerified(boolean isVerified) {
-		this.isVerified = isVerified;
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 
 	public List<Room> getRooms() {
