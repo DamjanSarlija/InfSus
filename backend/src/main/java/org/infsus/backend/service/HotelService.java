@@ -36,11 +36,18 @@ public class HotelService {
 			rooms.add(room);
 		}
 		hotel.setRooms(rooms);
-		User user = userService.getUserById(Long.valueOf(1L));
+		User user = userService.getUserEntityById(Long.valueOf(1L));
 		hotel.setAdministrator(user);
 		
 		hotelRepository.save(hotel);
 		
+		HotelDTO hotelDTO = hotelToDTO(hotel);
+		
+		return hotelDTO;
+		
+	}
+	
+	public HotelDTO hotelToDTO(Hotel hotel) {
 		HotelDTO hotelDTO = new HotelDTO();
 		hotelDTO.setId(hotel.getId());
 		hotelDTO.setName(hotel.getName());
@@ -49,6 +56,7 @@ public class HotelService {
 		hotelDTO.setVerified(false);
 		
 		List<RoomDTO> roomsDTO = new ArrayList<>();
+		List<Room> rooms = hotel.getRooms();
 		for (Room room : rooms) {
 			RoomDTO roomDTO = new RoomDTO();
 			roomDTO.setNumber(room.getNumber());
@@ -63,6 +71,7 @@ public class HotelService {
 		hotelDTO.setAdministrator(hotel.getAdministrator());
 		
 		return hotelDTO;
-		
 	}
+	
+	
 }

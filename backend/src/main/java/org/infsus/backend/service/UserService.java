@@ -1,5 +1,14 @@
 package org.infsus.backend.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.infsus.backend.dto.HotelDTO;
+import org.infsus.backend.dto.RoomDTO;
+import org.infsus.backend.dto.UserCreateDTO;
+import org.infsus.backend.dto.UserDTO;
+import org.infsus.backend.entity.Hotel;
+import org.infsus.backend.entity.Room;
 import org.infsus.backend.entity.User;
 import org.infsus.backend.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -12,10 +21,91 @@ public class UserService {
 		this.userRepository = userRepository;
 	}
 	
-	public User getUserById(Long id) {
+	public User getUserEntityById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
 		return user;
 	}
 	
+	public UserDTO addUser(UserCreateDTO userCreateDTO) {
+		User user = new User();
+		user.setFullName(userCreateDTO.getFullName());
+		user.setEmail(userCreateDTO.getEmail());
+		user.setPhoneNumber(userCreateDTO.getPhoneNumber());
+		user.setRole(User.Role.ADMINISTRATOR);
+		user.setHotels(new ArrayList<Hotel>());
+		
+		userRepository.save(user);
+		
+		UserDTO userDTO = userToDTO(user);
+		
+		return userDTO;
+	}
+	
+	public UserDTO getUserById(Long id) {
+		User user = getUserEntityById(id);
+		UserDTO userDTO = userToDTO(user);
+		return userDTO;
+	}
+	
+	public UserDTO userToDTO(User user) {
+		
+		UserDTO userDTO = new UserDTO();
+		userDTO.setId(user.getId());
+		userDTO.setFullName(user.getFullName());
+		userDTO.setEmail(user.getEmail());
+		userDTO.setPhoneNumber(user.getPhoneNumber());
+		userDTO.setRole(UserDTO.Role.valueOf(user.getRole().name()));
+		
+		List<Hotel> hotels = user.getHotels();
+		List <HotelDTO> hotelsDTO = new ArrayList<>();
+		for (Hotel hotel : hotels) {
+			
+			HotelDTO hotelDTO = new HotelDTO();
+			hotelDTO.setId(hotel.getId());
+			hotelDTO.setName(hotel.getName());
+			hotelDTO.setAddress(hotel.getAddress());
+			hotelDTO.setDescription(hotel.getDescription());
+			hotelDTO.setVerified(false);
+			
+			List<RoomDTO> roomsDTO = new ArrayList<>();
+			List<Room> rooms = hotel.getRooms();
+			for (Room room : rooms) {
+				RoomDTO roomDTO = new RoomDTO();
+				roomDTO.setNumber(room.getNumber());
+				roomDTO.setCapacity(room.getCapacity());
+				roomDTO.setPricePerNight(room.getPricePerNight());
+				roomDTO.setAvailable(true);
+				roomDTO.setHotelId(hotel.getId());
+				roomsDTO.add(roomDTO);
+			}
+			hotelDTO.setRooms(roomsDTO);
+			
+			hotelDTO.setAdministrator(hotel.getAdministrator());
+			
+			
+			hotelsDTO.add(hotelDTO);
+		}
+		
+		userDTO.setHotels(hotelsDTO);
+		
+		return userDTO;
+	}
+	
+	public UserDTO updateUser(Long id, UserCreateDTO userCreateDTO) {
+		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		user.setFullName(userCreateDTO.getFullName());
+		user.setEmail(userCreateDTO.getEmail());
+		user.setPhoneNumber(userCreateDTO.getPhoneNumber());
+		user.setRole(User.Role.ADMINISTRATOR);
+		
+		userRepository.save(user);
+		
+		return userToDTO(user);
+	}
+	
+	public void deleteUser(Long id) {
+		User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+		userRepository.delete(user);
+	}
 	
 }

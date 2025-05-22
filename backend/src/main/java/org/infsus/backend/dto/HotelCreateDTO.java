@@ -11,6 +11,8 @@ public class HotelCreateDTO {
 	private String name;
 	private String address;
 	private String description;
+	private List<RoomCreateDTO> rooms = new ArrayList<>();
+	
 	public String getName() {
 		return name;
 	}
@@ -35,5 +37,5 @@ public class HotelCreateDTO {
 	public void setRooms(List<RoomCreateDTO> rooms) {
 		this.rooms = rooms;
 	}
-	private List<RoomCreateDTO> rooms = new ArrayList<>();
+	
 }

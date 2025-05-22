@@ -1,20 +1,26 @@
-package org.infsus.backend.entity;
+package org.infsus.backend.dto;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import jakarta.persistence.*;
-import lombok.*;
+import org.infsus.backend.entity.Hotel;
+import org.infsus.backend.entity.User.Role;
 
-@Entity
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "users")
-public class User {
+public class UserDTO {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String fullName;
@@ -30,8 +36,7 @@ public class User {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	
-	@OneToMany(mappedBy = "administrator", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Hotel> hotels = new ArrayList<>();
+	private List<HotelDTO> hotels = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -73,15 +78,14 @@ public class User {
 		this.role = role;
 	}
 
-	public List<Hotel> getHotels() {
+	public List<HotelDTO> getHotels() {
 		return hotels;
 	}
 
-	public void setHotels(List<Hotel> hotels) {
+	public void setHotels(List<HotelDTO> hotels) {
 		this.hotels = hotels;
 	}
+	
+	
+	
 }
-
-
-
-
