@@ -1,7 +1,7 @@
 // src/pages/HotelsPage.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 const HotelsPage = () => {
     const [hotels, setHotels] = useState([]);
@@ -123,10 +123,15 @@ const HotelsPage = () => {
 
     return (
         <div className="container">
+            <div style={{display: "flex", gap: "1rem", marginBottom: "1rem"}}>
+                <button onClick={() => navigate("/")}>Hoteli</button>
+                <button onClick={() => navigate("/administrators")}>Administratori</button>
+            </div>
+
             <h1>Hoteli</h1>
 
-            <div style={{ marginBottom: "1rem" }}>
-                <input name="id" placeholder="ID hotela" value={searchParams.id} onChange={handleInputChange} />
+            <div style={{marginBottom: "1rem"}}>
+                <input name="id" placeholder="ID hotela" value={searchParams.id} onChange={handleInputChange}/>
                 <input name="name" placeholder="Naziv hotela" value={searchParams.name} onChange={handleInputChange} />
                 <input name="address" placeholder="Adresa hotela" value={searchParams.address} onChange={handleInputChange} />
                 <input name="administratorId" placeholder="ID administratora" value={searchParams.administratorId} onChange={handleInputChange} />
