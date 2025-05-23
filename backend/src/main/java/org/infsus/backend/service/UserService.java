@@ -118,4 +118,14 @@ public class UserService {
 		userRepository.delete(user);
 	}
 	
+	public List<UserDTO> getAll() {
+		List<User> allUsers = userRepository.findAll();
+		List<UserDTO> allUsersDTO = new ArrayList<>();
+		for (User user : allUsers) {
+			UserDTO userDTO = userToDTO(user);
+			allUsersDTO.add(userDTO);
+		}
+		return allUsersDTO;
+	}
+	
 }

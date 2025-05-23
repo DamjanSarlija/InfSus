@@ -1,5 +1,7 @@
 package org.infsus.backend.controller;
 
+import java.util.*;
+
 import org.infsus.backend.dto.HotelCreateDTO;
 import org.infsus.backend.dto.HotelDTO;
 import org.infsus.backend.dto.UserCreateDTO;
@@ -42,5 +44,10 @@ public class UserController {
 	public ResponseEntity<String> deleteUser(@PathVariable Long id) {
 		userService.deleteUser(id);
 		return ResponseEntity.ok("User deleted successfully");
+	}
+	
+	@GetMapping("/getAll")
+	public List<UserDTO> getAll() {
+		return userService.getAll();
 	}
 }

@@ -45,4 +45,9 @@ public class HotelController {
 		return ResponseEntity.ok("Hotel deleted successfully!");
 	}
 	
+	@GetMapping("/getAll")
+	public List<HotelDTO> getAll() {
+		return hotelService.getAll();
+	}
+	
 }

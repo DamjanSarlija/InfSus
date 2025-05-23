@@ -156,4 +156,13 @@ public class HotelService {
 		Hotel hotel = hotelRepository.findById(id).orElseThrow(() -> new RuntimeException("Hotel not found"));
 		hotelRepository.delete(hotel);
 	}
+	
+	public List<HotelDTO> getAll() {
+		List<Hotel> allHotels = hotelRepository.findAll();
+		List<HotelDTO> allHotelsDTO = new ArrayList<>();
+		for (Hotel hotel : allHotels) {
+			allHotelsDTO.add(hotelToDTO(hotel));
+		}
+		return allHotelsDTO;
+	}
 }
