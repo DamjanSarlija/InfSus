@@ -6,6 +6,7 @@ import org.infsus.backend.dto.HotelCreateDTO;
 import org.infsus.backend.dto.HotelDTO;
 import org.infsus.backend.dto.UserCreateDTO;
 import org.infsus.backend.dto.UserDTO;
+import org.infsus.backend.dto.UserMinimalDTO;
 import org.infsus.backend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -50,4 +51,20 @@ public class UserController {
 	public List<UserDTO> getAll() {
 		return userService.getAll();
 	}
+	
+	@GetMapping("/getAll/minimal")
+	public List<UserMinimalDTO> getAllMinimal() {
+		return userService.getAllMinimal();
+	}
+	
+	@GetMapping("/search")
+	public List<UserDTO> search(@RequestParam(required = false) Long id, @RequestParam(required = false) String fullName, @RequestParam(required = false) String email, @RequestParam(required = false) String phoneNumber) {
+		return userService.search(id, fullName, email, phoneNumber);
+	}
+	
+	@GetMapping("/search/minimal")
+	public List<UserMinimalDTO> searchMinimal(@RequestParam(required = false) Long id, @RequestParam(required = false) String fullName, @RequestParam(required = false) String email, @RequestParam(required = false) String phoneNumber) {
+		return userService.searchMinimal(id, fullName, email, phoneNumber);
+	}
+	
 }

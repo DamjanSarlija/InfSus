@@ -4,13 +4,14 @@ import java.util.*;
 
 import org.infsus.backend.dto.HotelCreateDTO;
 import org.infsus.backend.dto.HotelDTO;
+import org.infsus.backend.dto.HotelMinimalDTO;
 import org.infsus.backend.dto.HotelUpdateDTO;
 import org.infsus.backend.dto.RoomCreateDTO;
+import org.infsus.backend.dto.UserDTO;
 import org.infsus.backend.service.HotelService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -48,6 +49,21 @@ public class HotelController {
 	@GetMapping("/getAll")
 	public List<HotelDTO> getAll() {
 		return hotelService.getAll();
+	}
+	
+	@GetMapping("/getAll/minimal")
+	public List<HotelMinimalDTO> getAllMinimal() {
+		return hotelService.getAllMinimal();
+	}
+	
+	@GetMapping("/search")
+	public List<HotelDTO> search(@RequestParam(required = false) Long id, @RequestParam(required = false) String name, @RequestParam(required = false) String address, @RequestParam(required = false) String description, @RequestParam(required = false) Boolean verified, @RequestParam(required = false) Long administratorId) {
+		return hotelService.search(id, name, address, description, verified, administratorId);
+	}
+	
+	@GetMapping("/search/minimal")
+	public List<HotelMinimalDTO> searchMinimal(@RequestParam(required = false) Long id, @RequestParam(required = false) String name, @RequestParam(required = false) String address, @RequestParam(required = false) String description, @RequestParam(required = false) Boolean verified, @RequestParam(required = false) Long administratorId) {
+		return hotelService.searchMinimal(id, name, address, description, verified, administratorId);
 	}
 	
 }

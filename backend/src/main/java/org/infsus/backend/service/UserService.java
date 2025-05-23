@@ -7,6 +7,7 @@ import org.infsus.backend.dto.HotelDTO;
 import org.infsus.backend.dto.RoomDTO;
 import org.infsus.backend.dto.UserCreateDTO;
 import org.infsus.backend.dto.UserDTO;
+import org.infsus.backend.dto.UserMinimalDTO;
 import org.infsus.backend.entity.Hotel;
 import org.infsus.backend.entity.Room;
 import org.infsus.backend.entity.User;
@@ -128,4 +129,40 @@ public class UserService {
 		return allUsersDTO;
 	}
 	
+	public List<UserMinimalDTO> getAllMinimal() {
+		List<User> allUsers = userRepository.findAll();
+		List<UserMinimalDTO> allUsersMinimalDTO = new ArrayList<>();
+		for (User user : allUsers) {
+			UserMinimalDTO userMinimalDTO = userToMinimalDTO(user);
+			allUsersMinimalDTO.add(userMinimalDTO);
+		}
+		return allUsersMinimalDTO;
+	}
+	
+	public List<UserDTO> search(Long id, String fullName, String email, String phoneNumber) {
+		List<User> filteredUsers = userRepository.findByCustomQuery(id, fullName, email, phoneNumber);
+		List<UserDTO> filteredUsersDTO = new ArrayList<>();
+		for (User user : filteredUsers) {
+			UserDTO userDTO = userToDTO(user);
+			filteredUsersDTO.add(userDTO);
+		}
+		return filteredUsersDTO;
+	}
+	
+	public List<UserMinimalDTO> searchMinimal(Long id, String fullName, String email, String phoneNumber) {
+		List<User> filteredUsers = userRepository.findByCustomQuery(id, fullName, email, phoneNumber);
+		List<UserMinimalDTO> filteredUsersMinimalDTO = new ArrayList<>();
+		for (User user : filteredUsers) {
+			UserMinimalDTO userMinimalDTO = userToMinimalDTO(user);
+			filteredUsersMinimalDTO.add(userMinimalDTO);
+		}
+		return filteredUsersMinimalDTO;
+	}
+	
+	public UserMinimalDTO userToMinimalDTO(User user) {
+		UserMinimalDTO userMinimalDTO = new UserMinimalDTO();
+		userMinimalDTO.setId(user.getId());
+		userMinimalDTO.setFullName(user.getFullName());
+		return userMinimalDTO;
+	}
 }

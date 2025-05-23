@@ -165,4 +165,42 @@ public class HotelService {
 		}
 		return allHotelsDTO;
 	}
+	
+	public List<HotelMinimalDTO> getAllMinimal() {
+		List<Hotel> allHotels = hotelRepository.findAll();
+		List<HotelMinimalDTO> allHotelsMinimalDTO = new ArrayList<>();
+		for (Hotel hotel : allHotels) {
+			allHotelsMinimalDTO.add(hotelToMinimalDTO(hotel));
+		}
+		return allHotelsMinimalDTO;
+	}
+	
+	public List<HotelDTO> search(Long id, String name, String address, String description, Boolean verified, Long administratorId) {
+		List<Hotel> filteredHotels = hotelRepository.findByCustomQuery(id, name, address, description, verified, administratorId);
+		List<HotelDTO> filteredHotelsDTO = new ArrayList<>();
+		for (Hotel hotel : filteredHotels) {
+			HotelDTO hotelDTO = hotelToDTO(hotel);
+			filteredHotelsDTO.add(hotelDTO);
+		}
+		return filteredHotelsDTO;
+	}
+	
+	public List<HotelMinimalDTO> searchMinimal(Long id, String name, String address, String description, Boolean verified, Long administratorId) {
+		List<Hotel> filteredHotels = hotelRepository.findByCustomQuery(id, name, address, description, verified, administratorId);
+		List<HotelMinimalDTO> filteredHotelsMinimalDTO = new ArrayList<>();
+		for (Hotel hotel : filteredHotels) {
+			HotelMinimalDTO hotelMinimalDTO = hotelToMinimalDTO(hotel);
+			filteredHotelsMinimalDTO.add(hotelMinimalDTO);
+		}
+		return filteredHotelsMinimalDTO;
+	}
+	
+	public HotelMinimalDTO hotelToMinimalDTO(Hotel hotel) {
+		
+		HotelMinimalDTO hotelMinimalDTO = new HotelMinimalDTO();
+		hotelMinimalDTO.setId(hotel.getId());
+		hotelMinimalDTO.setName(hotel.getName());
+		hotelMinimalDTO.setAddress(hotel.getAddress());
+		return hotelMinimalDTO;
+	}
 }
