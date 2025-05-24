@@ -1,4 +1,3 @@
-// src/pages/AdministratorsPage.jsx
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -10,6 +9,7 @@ const AdministratorsPage = () => {
     const [editAdmin, setEditAdmin] = useState({ fullName: "", email: "", phoneNumber: "" });
     const [errorMessage, setErrorMessage] = useState("");
     const [searchParams, setSearchParams] = useState({ id: "", fullName: "", email: "", phoneNumber: "" });
+    const [showAddForm, setShowAddForm] = useState(false);
 
     const navigate = useNavigate();
 
@@ -47,6 +47,7 @@ const AdministratorsPage = () => {
             await axios.post("/users", newAdmin);
             fetchAdmins();
             setNewAdmin({ fullName: "", email: "", phoneNumber: "" });
+            setShowAddForm(false);
             setErrorMessage("");
         } catch (err) {
             setErrorMessage(err.response?.data || "Greška prilikom dodavanja administratora.");
@@ -96,20 +97,24 @@ const AdministratorsPage = () => {
             <table>
                 <thead>
                 <tr>
+                    <th>ID</th>
                     <th>Ime i prezime</th>
                     <th>Email</th>
                     <th>Telefon</th>
                     <th>Akcije</th>
                 </tr>
                 </thead>
+
                 <tbody>
                 {admins.map((admin) => (
                     <tr key={admin.id}>
+                        <td>{admin.id}</td>
                         {editingId === admin.id ? (
                             <>
-                                <td><input name="fullName" value={editAdmin.fullName} onChange={handleEditChange} /></td>
-                                <td><input name="email" value={editAdmin.email} onChange={handleEditChange} /></td>
-                                <td><input name="phoneNumber" value={editAdmin.phoneNumber} onChange={handleEditChange} /></td>
+                                <td><input name="fullName" value={editAdmin.fullName} onChange={handleEditChange}/></td>
+                                <td><input name="email" value={editAdmin.email} onChange={handleEditChange}/></td>
+                                <td><input name="phoneNumber" value={editAdmin.phoneNumber}
+                                           onChange={handleEditChange}/></td>
                                 <td>
                                     <button onClick={() => saveEdit(admin.id)}>Spremi</button>
                                     <button onClick={() => setEditingId(null)}>Odustani</button>
@@ -129,13 +134,39 @@ const AdministratorsPage = () => {
                     </tr>
                 ))}
                 </tbody>
+
             </table>
 
-            <h2>Dodaj novog administratora</h2>
-            <input name="fullName" placeholder="Ime i prezime" value={newAdmin.fullName} onChange={handleNewChange} />
-            <input name="email" placeholder="Email" value={newAdmin.email} onChange={handleNewChange} />
-            <input name="phoneNumber" placeholder="Broj telefona" value={newAdmin.phoneNumber} onChange={handleNewChange} />
-            <button onClick={addAdmin}>Dodaj</button>
+            <br/>
+            <button onClick={() => setShowAddForm((prev) => !prev)}>
+                {showAddForm ? "Zatvori" : "Dodaj administratora"}
+            </button>
+
+            {showAddForm && (
+                <div style={{marginTop: "1rem"}}>
+                    <h2>Dodaj novog administratora</h2>
+                    <input
+                        name="fullName"
+                        placeholder="Ime i prezime"
+                        value={newAdmin.fullName}
+                        onChange={handleNewChange}
+                    />
+                    <input
+                        name="email"
+                        placeholder="Email"
+                        value={newAdmin.email}
+                        onChange={handleNewChange}
+                    />
+                    <input
+                        name="phoneNumber"
+                        placeholder="Broj telefona"
+                        value={newAdmin.phoneNumber}
+                        onChange={handleNewChange}
+                    />
+                    <br/>
+                    <button onClick={addAdmin}>Dodaj</button>
+                </div>
+            )}
         </div>
     );
 };

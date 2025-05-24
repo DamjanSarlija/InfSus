@@ -91,26 +91,52 @@ const HotelsPage = () => {
     };
 
     const submitNewHotel = async () => {
-        const numbers = newHotel.rooms.map(r => parseInt(r.number));
-        const hasDuplicate = numbers.some((num, i) => numbers.indexOf(num) !== i);
-        if (newHotel.rooms.length === 0) {
+        const { name, address, description, administratorId, rooms } = newHotel;
+
+        // Validacija općih podataka
+        if (!name || !address || !description || !administratorId) {
+            setErrorMessage("Svi podaci o hotelu moraju biti uneseni.");
+            return;
+        }
+
+        // Validacija soba
+        if (rooms.length === 0) {
             setErrorMessage("Hotel mora imati barem jednu sobu.");
             return;
         }
+
+        for (const room of rooms) {
+            if (
+                room.number === "" ||
+                room.capacity === "" ||
+                room.pricePerNight === "" ||
+                isNaN(room.number) ||
+                isNaN(room.capacity) ||
+                isNaN(room.pricePerNight)
+            ) {
+                setErrorMessage("Sva polja za sobe moraju biti ispravno popunjena brojevima.");
+                return;
+            }
+        }
+
+        const numbers = rooms.map((r) => Number(r.number));
+        const hasDuplicate = numbers.some((num, i) => numbers.indexOf(num) !== i);
         if (hasDuplicate) {
             setErrorMessage("Dvije sobe ne mogu imati isti broj.");
             return;
         }
+
+        // Ako je sve validno, šalji podatke
         try {
             await axios.post("/hotels", {
                 ...newHotel,
-                administratorId: parseInt(newHotel.administratorId),
-                rooms: newHotel.rooms.map(r => ({
+                administratorId: parseInt(administratorId),
+                rooms: rooms.map((r) => ({
                     ...r,
                     number: parseInt(r.number),
                     capacity: parseInt(r.capacity),
                     pricePerNight: parseInt(r.pricePerNight),
-                }))
+                })),
             });
             setShowAddForm(false);
             fetchHotels();
@@ -120,6 +146,7 @@ const HotelsPage = () => {
             setErrorMessage(err.response?.data || "Greška kod spremanja hotela.");
         }
     };
+
 
     return (
         <div className="container">

@@ -64,40 +64,41 @@ const HotelDetailsPage = () => {
     };
 
     const updateHotelInfo = async () => {
-        try {
-            await axios.put(`/hotels/${id}`, {
-                name: hotel.name,
-                address: hotel.address,
-                description: hotel.description,
-                verified: hotel.verified,
-                administratorId: parseInt(hotel.administratorId),
-                rooms: hotel.rooms.map((r) => ({
-                    id: r.id,
-                    number: parseInt(r.number),
-                    capacity: parseInt(r.capacity),
-                    pricePerNight: parseInt(r.pricePerNight),
-                    available: r.available,
-                })),
-            });
-            setErrorMessage("");
-            setSuccessMessage("Promjene hotela su uspješno spremljene.");
-            fetchHotel();
-        } catch (err) {
+        const { name, address, description, administratorId, rooms } = hotel;
+
+        // Validacija osnovnih polja
+        if (!name || !address || !description || !administratorId) {
+            setErrorMessage("Svi podaci o hotelu moraju biti uneseni.");
             setSuccessMessage("");
-            setErrorMessage(err.response?.data || "Greška kod spremanja hotela.");
+            return;
         }
-    };
 
-    const updateRoomsOnly = async () => {
-        const numbers = hotel.rooms.map((r) => parseInt(r.number));
-        const hasDuplicate = numbers.some((num, i) => numbers.indexOf(num) !== i);
-
-        if (hotel.rooms.length === 0) {
+        // Provjera da hotel ima sobe
+        if (rooms.length === 0) {
             setErrorMessage("Hotel mora imati barem jednu sobu.");
             setSuccessMessage("");
             return;
         }
 
+        // Provjera ispravnosti svih soba
+        for (const room of rooms) {
+            if (
+                room.number === "" ||
+                room.capacity === "" ||
+                room.pricePerNight === "" ||
+                isNaN(room.number) ||
+                isNaN(room.capacity) ||
+                isNaN(room.pricePerNight)
+            ) {
+                setErrorMessage("Sva polja za sobe moraju biti popunjena valjanim brojevima.");
+                setSuccessMessage("");
+                return;
+            }
+        }
+
+        // Tek sada možemo provjeriti duplikate
+        const numbers = rooms.map((r) => Number(r.number));
+        const hasDuplicate = numbers.some((num, i) => numbers.indexOf(num) !== i);
         if (hasDuplicate) {
             setErrorMessage("Dvije sobe ne mogu imati isti broj.");
             setSuccessMessage("");
@@ -106,12 +107,12 @@ const HotelDetailsPage = () => {
 
         try {
             await axios.put(`/hotels/${id}`, {
-                name: hotel.name,
-                address: hotel.address,
-                description: hotel.description,
+                name,
+                address,
+                description,
                 verified: hotel.verified,
-                administratorId: parseInt(hotel.administratorId),
-                rooms: hotel.rooms.map((r) => ({
+                administratorId: parseInt(administratorId),
+                rooms: rooms.map((r) => ({
                     id: r.id,
                     number: parseInt(r.number),
                     capacity: parseInt(r.capacity),
@@ -120,13 +121,21 @@ const HotelDetailsPage = () => {
                 })),
             });
             setErrorMessage("");
-            setSuccessMessage("Sobe su uspješno spremljene.");
+            setSuccessMessage("Podaci hotela i sobe su uspješno spremljeni.");
             fetchHotel();
         } catch (err) {
             setSuccessMessage("");
-            setErrorMessage(err.response?.data || "Greška kod spremanja soba.");
+            const backendError = err.response?.data;
+            setErrorMessage(
+                typeof backendError === "string"
+                    ? backendError
+                    : "Greška kod spremanja hotela."
+            );
         }
     };
+
+
+
 
     const navigateToAdjacent = (direction) => {
         const currentIndex = sortedHotels.findIndex(h => h.id === parseInt(id));
@@ -163,8 +172,6 @@ const HotelDetailsPage = () => {
                 ))}
             </select>
 
-            <button onClick={updateHotelInfo}>Spremi promjene hotela</button>
-
             <h3>Sobe</h3>
             {hotel.rooms.map((room, index) => (
                 <div key={index}>
@@ -179,10 +186,12 @@ const HotelDetailsPage = () => {
             ))}
 
             <button onClick={addRoom}>Dodaj sobu</button>
+
             {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
             {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
+
             <br /><br />
-            <button onClick={updateRoomsOnly}>Spremi sobe</button>
+            <button onClick={updateHotelInfo}>Spremi podatke hotela i sobe</button>
         </div>
     );
 };
