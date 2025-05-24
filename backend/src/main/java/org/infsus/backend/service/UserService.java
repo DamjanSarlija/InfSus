@@ -40,9 +40,11 @@ public class UserService {
 		user.setRole(User.Role.ADMINISTRATOR);
 		user.setHotels(new ArrayList<Hotel>());
 		
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 		
-		UserDTO userDTO = userToDTO(user);
+		
+		UserDTO userDTO = userToDTO(savedUser);
+		
 		
 		return userDTO;
 	}

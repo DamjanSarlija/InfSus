@@ -9,11 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface HotelRepository extends JpaRepository<Hotel, Long>{
-	List<Hotel> findByAdministrator(User administrator);
-	List<Hotel> findByName(String name);
-	List<Hotel> findByAddress(String address);
-	List<Hotel> findByDescription(String description);
-	List<Hotel> findByVerified(boolean isVerified);
+	
 	int countByAdministratorId(Long id);
 	
 	
