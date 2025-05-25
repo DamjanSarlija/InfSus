@@ -114,9 +114,9 @@ public class UserService {
 		user.setPhoneNumber(userCreateDTO.getPhoneNumber());
 		user.setRole(User.Role.ADMINISTRATOR);
 		
-		userRepository.save(user);
+		User savedUser = userRepository.save(user);
 		
-		return userToDTO(user);
+		return userToDTO(savedUser);
 	}
 	
 	public void deleteUser(Long id) {
