@@ -56,9 +56,9 @@ public class HotelService {
 		User user = userService.getUserEntityById(hotelCreateDTO.getAdministratorId());
 		hotel.setAdministrator(user);
 		
-		hotelRepository.save(hotel);
+		Hotel savedHotel = hotelRepository.save(hotel);
 		
-		HotelDTO hotelDTO = hotelToDTO(hotel);
+		HotelDTO hotelDTO = hotelToDTO(savedHotel);
 		
 		return hotelDTO;
 		
@@ -116,9 +116,9 @@ public class HotelService {
 		currentRooms.clear();
 		currentRooms.addAll(updatedRooms);
 		
-		hotelRepository.save(hotel);
+		Hotel savedHotel = hotelRepository.save(hotel);
 		
-		return hotelToDTO(hotel);
+		return hotelToDTO(savedHotel);
 	}
 	
 	public HotelDTO getHotelById(Long id) {
