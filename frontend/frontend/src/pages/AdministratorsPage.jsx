@@ -42,7 +42,27 @@ const AdministratorsPage = () => {
         setSearchParams((prev) => ({ ...prev, [name]: value }));
     };
 
+    // VALIDACIJE
+    const isValidEmail = (email) => email.includes("@");
+
+    const isValidPhone = (phone) => /^[\d\s+\/-]+$/.test(phone);
+
+    const areFieldsFilled = (admin) => admin.fullName && admin.email && admin.phoneNumber;
+
     const addAdmin = async () => {
+        if (!areFieldsFilled(newAdmin)) {
+            setErrorMessage("Sva polja moraju biti popunjena.");
+            return;
+        }
+        if (!isValidEmail(newAdmin.email)) {
+            setErrorMessage("Email mora sadržavati znak @.");
+            return;
+        }
+        if (!isValidPhone(newAdmin.phoneNumber)) {
+            setErrorMessage("Telefon smije sadržavati samo brojeve i znakove +, -, /.");
+            return;
+        }
+
         try {
             await axios.post("/users", newAdmin);
             fetchAdmins();
@@ -65,6 +85,19 @@ const AdministratorsPage = () => {
     };
 
     const saveEdit = async (id) => {
+        if (!areFieldsFilled(editAdmin)) {
+            setErrorMessage("Sva polja moraju biti popunjena.");
+            return;
+        }
+        if (!isValidEmail(editAdmin.email)) {
+            setErrorMessage("Email mora sadržavati znak @.");
+            return;
+        }
+        if (!isValidPhone(editAdmin.phoneNumber)) {
+            setErrorMessage("Telefon smije sadržavati samo brojeve i znakove +, -, /.");
+            return;
+        }
+
         try {
             await axios.put(`/users/${id}`, editAdmin);
             fetchAdmins();
@@ -113,8 +146,7 @@ const AdministratorsPage = () => {
                             <>
                                 <td><input name="fullName" value={editAdmin.fullName} onChange={handleEditChange}/></td>
                                 <td><input name="email" value={editAdmin.email} onChange={handleEditChange}/></td>
-                                <td><input name="phoneNumber" value={editAdmin.phoneNumber}
-                                           onChange={handleEditChange}/></td>
+                                <td><input name="phoneNumber" value={editAdmin.phoneNumber} onChange={handleEditChange}/></td>
                                 <td>
                                     <button onClick={() => saveEdit(admin.id)}>Spremi</button>
                                     <button onClick={() => setEditingId(null)}>Odustani</button>
@@ -128,13 +160,13 @@ const AdministratorsPage = () => {
                                 <td>
                                     <button onClick={() => startEdit(admin)}>Uredi</button>
                                     <button onClick={() => deleteAdmin(admin.id)}>Obriši</button>
+                                    <button onClick={() => navigate(`/administrators/${admin.id}`)}>Detalji</button>
                                 </td>
                             </>
                         )}
                     </tr>
                 ))}
                 </tbody>
-
             </table>
 
             <br/>

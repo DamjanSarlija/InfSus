@@ -1,7 +1,8 @@
 // src/pages/HotelsPage.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { useNavigate, Link } from "react-router-dom";
+
 
 const HotelsPage = () => {
     const [hotels, setHotels] = useState([]);
@@ -93,13 +94,13 @@ const HotelsPage = () => {
     const submitNewHotel = async () => {
         const { name, address, description, administratorId, rooms } = newHotel;
 
-        // Validacija općih podataka
+
         if (!name || !address || !description || !administratorId) {
             setErrorMessage("Svi podaci o hotelu moraju biti uneseni.");
             return;
         }
 
-        // Validacija soba
+
         if (rooms.length === 0) {
             setErrorMessage("Hotel mora imati barem jednu sobu.");
             return;
@@ -126,7 +127,7 @@ const HotelsPage = () => {
             return;
         }
 
-        // Ako je sve validno, šalji podatke
+
         try {
             await axios.post("/hotels", {
                 ...newHotel,

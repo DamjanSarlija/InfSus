@@ -1,4 +1,3 @@
-// src/pages/HotelDetailsPage.jsx
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -66,21 +65,21 @@ const HotelDetailsPage = () => {
     const updateHotelInfo = async () => {
         const { name, address, description, administratorId, rooms } = hotel;
 
-        // Validacija osnovnih polja
+
         if (!name || !address || !description || !administratorId) {
             setErrorMessage("Svi podaci o hotelu moraju biti uneseni.");
             setSuccessMessage("");
             return;
         }
 
-        // Provjera da hotel ima sobe
+
         if (rooms.length === 0) {
             setErrorMessage("Hotel mora imati barem jednu sobu.");
             setSuccessMessage("");
             return;
         }
 
-        // Provjera ispravnosti svih soba
+
         for (const room of rooms) {
             if (
                 room.number === "" ||
@@ -96,7 +95,7 @@ const HotelDetailsPage = () => {
             }
         }
 
-        // Tek sada možemo provjeriti duplikate
+
         const numbers = rooms.map((r) => Number(r.number));
         const hasDuplicate = numbers.some((num, i) => numbers.indexOf(num) !== i);
         if (hasDuplicate) {
